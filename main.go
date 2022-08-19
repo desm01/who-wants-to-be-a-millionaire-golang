@@ -58,13 +58,3 @@ func formatSlice(questions []string) [][]string {
 	}
 	return qSlice
 }
-
-/**
-To do:
-- Shuffle questions and answers
-- Add lifelines
-- Add more questions
-- Add error handling when typing numbers
-- Add are you sure prompts
-- Fancy text formatting?
-*/
