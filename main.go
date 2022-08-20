@@ -15,8 +15,9 @@ func main() {
 	questions := getQuestions()
 	for alive {
 		if questNum == 15 {
-			println("YOU HAVE WON!")
+			println("YOU HAVE WON $1,000,000!")
 			alive = false
+			break
 		}
 		println("QUESTION NUMBER: ", questNum+1, "/15")
 		println("This is for", matchQuestionToAmount(questNum))
@@ -33,7 +34,7 @@ func main() {
 		println("Please enter the answer: 1..4")
 		_, err := fmt.Scan(&inp)
 
-		if err == nil {
+		if err == nil && inp >= 1 && inp <= 5 {
 			if inp == 5 {
 				println("Congratulations, you are walking away with", matchQuestionToAmount(questNum-1))
 				println("The correct answer was", qs[5])
