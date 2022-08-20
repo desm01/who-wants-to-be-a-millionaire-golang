@@ -48,3 +48,18 @@ func TestShouldMatchQuestionToAmount(t *testing.T) {
 		t.Errorf("Expected: $0, but was %v", minusOne)
 	}
 }
+
+func TestWrongAnswerScreen(t *testing.T) {
+	str := wrongAnswerScreen(0)
+	if str != "$0" {
+		t.Errorf("Expected $0 but got %v", str)
+	}
+	str = wrongAnswerScreen(4)
+	if str != "$100" {
+		t.Errorf("Expected $100 but got %v", str)
+	}
+	str = wrongAnswerScreen(10)
+	if str != "$32,000" {
+		t.Errorf("Expected $32,000 but got %v", str)
+	}
+}

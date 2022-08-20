@@ -22,6 +22,7 @@ func main() {
 		}
 		println("QUESTION NUMBER: ", questNum+1, "/15")
 		println("This is for", matchQuestionToAmount(questNum))
+		println("You currently have", matchQuestionToAmount(questNum-1))
 		qs := questions[questNum]
 		qs = shuffleAnswers(qs)
 		var inp int
@@ -46,6 +47,8 @@ func main() {
 				questNum++
 			} else {
 				println("YOU'RE WRONG")
+				println("The correct answer was", qs[5])
+				println("You are leaving with", wrongAnswerScreen(questNum))
 				alive = false
 			}
 		} else {
@@ -100,6 +103,18 @@ func shuffleAnswers(str []string) []string {
 
 func clearScreen() {
 	fmt.Print("\033[H\033[2J")
+}
+
+func wrongAnswerScreen(q int) string {
+	if q == 0 {
+		return matchQuestionToAmount(-1)
+	} else if q > 0 && q < 5 {
+		return matchQuestionToAmount(0)
+	} else if q > 5 && q < 9 {
+		return matchQuestionToAmount(4)
+	} else {
+		return matchQuestionToAmount(9)
+	}
 }
 
 func matchQuestionToAmount(q int) string {

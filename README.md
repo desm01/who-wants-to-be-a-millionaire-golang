@@ -14,3 +14,4 @@ go build main.go && ./main
 - More questions
 - Add user prompts
 - Questions should get harder overtime
+- Don't shuffle questions if the user in-correctly enters text
