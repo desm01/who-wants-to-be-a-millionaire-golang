@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -18,7 +20,9 @@ func main() {
 		}
 		println("QUESTION NUMBER: ", questNum+1, "/15")
 		qs := questions[questNum]
+		qs = shuffleAnswers(qs)
 		var inp int
+
 		println(qs[0])
 		println("1.", qs[1])
 		println("2.", qs[2])
@@ -61,4 +65,17 @@ func formatSlice(questions []string) [][]string {
 		}
 	}
 	return qSlice
+}
+
+func shuffleAnswers(str []string) []string {
+	src := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(src)
+	for i := 1; i < 5; i++ {
+		newPos := r.Intn(i)
+		if newPos != 0 {
+			str[i], str[newPos] = str[newPos], str[i]
+		}
+
+	}
+	return str
 }

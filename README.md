@@ -11,7 +11,5 @@ go run main.go
 - Shuffle questions and answers
 - Lifelines
 - More questions
-- Gracefully handle errors
 - Add user prompts
-- Fancy text formatting?
 - Unit tests
