@@ -13,3 +13,4 @@ go run main.go
 - More questions
 - Add user prompts
 - Unit tests
+- Questions should get harder overtime
