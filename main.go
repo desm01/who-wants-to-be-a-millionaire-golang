@@ -13,6 +13,7 @@ func main() {
 	alive := true
 	questNum := 0
 	questions := getQuestions()
+	questions = shuffleQuestions(questions)
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -52,6 +53,16 @@ func main() {
 		}
 
 	}
+}
+
+func shuffleQuestions(qs [][]string) [][]string {
+	src := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(src)
+	for i := 1; i < len(qs); i++ {
+		newPos := r.Intn(i)
+		qs[i], qs[newPos] = qs[newPos], qs[i]
+	}
+	return qs
 }
 
 func getQuestions() [][]string {
