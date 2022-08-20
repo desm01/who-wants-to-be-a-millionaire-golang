@@ -2,9 +2,11 @@
 
 Simple game created whilst learning Golang
 
-To run the code:
+Building, testing & running:
 ```
 go run main.go
+go test
+go build main.go && ./main
 ```
 
 ## To do
