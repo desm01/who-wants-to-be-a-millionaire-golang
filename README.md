@@ -8,9 +8,7 @@ go run main.go
 ```
 
 ## To do
-- Shuffle questions and answers
 - Lifelines
 - More questions
 - Add user prompts
-- Unit tests
 - Questions should get harder overtime
