@@ -11,8 +11,6 @@ func main() {
 	alive := true
 	questNum := 0
 	questions := getQuestions()
-	fmt.Println(questions)
-	println("WELCOME TO WHO WANTS TO BE A MILLIONAIRE")
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON!")
@@ -27,15 +25,21 @@ func main() {
 		println("3.", qs[3])
 		println("4.", qs[4])
 		println("Please enter the answer: 1..4")
-		fmt.Scan(&inp)
+		_, err := fmt.Scan(&inp)
 
-		if qs[inp] == qs[5] {
-			println("YOU'RE CORRECT!")
-			questNum++
+		if err == nil {
+			if qs[inp] == qs[5] {
+				println("YOU'RE CORRECT!")
+				fmt.Print("\033[H\033[2J")
+				questNum++
+			} else {
+				println("YOU'RE WRONG")
+				alive = false
+			}
 		} else {
-			println("YOU'RE WRONG")
-			alive = false
+			fmt.Print("\033[H\033[2J")
 		}
+
 	}
 }
 
