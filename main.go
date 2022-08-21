@@ -31,9 +31,9 @@ func main() {
 		_, err := fmt.Scan(&inp)
 
 		if inputIsCorrect(err, inp) {
-			if inp == 5 {
+			if inp == 5 && playerWantsToWalkAway() {
 				println("Congratulations, you are walking away with", matchQuestionToAmount(questNum-1))
-				println("The correct answer was", getCorrectAnswer(q))
+				displayCorrectAnswer(q)
 				alive = false
 			} else if q[inp] == getCorrectAnswer(q) {
 				println("YOU'RE CORRECT!")
@@ -41,7 +41,7 @@ func main() {
 				questNum++
 			} else {
 				println("YOU'RE WRONG")
-				println("The correct answer was", getCorrectAnswer(q))
+				displayCorrectAnswer(q)
 				println("You are leaving with", getAmountFromLastCheckpoint(questNum))
 				alive = false
 			}
@@ -70,6 +70,10 @@ func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
+func displayCorrectAnswer(q []string) {
+	println("The correct answer to '" + q[0] + "' was " + getCorrectAnswer(q))
+}
+
 func getAmountFromLastCheckpoint(q int) string {
 	if q == 0 {
 		return matchQuestionToAmount(-1)
@@ -80,6 +84,19 @@ func getAmountFromLastCheckpoint(q int) string {
 	} else {
 		return matchQuestionToAmount(9)
 	}
+}
+
+func playerWantsToWalkAway() bool {
+	var inp int
+	clearScreen()
+	println("Are you sure you want to walk away?")
+	println("1. Yes")
+	println("2. No")
+	_, err := fmt.Scan(&inp)
+	if inputIsCorrect(err, inp) {
+		return inp == 1
+	}
+	return false
 }
 
 func matchQuestionToAmount(q int) string {
