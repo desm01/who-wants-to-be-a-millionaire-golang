@@ -15,7 +15,7 @@ func newQuestions(fn string) questions {
 	q = append(q, readQuestionsFromFile(fn)...)
 	q.shuffleQuestions()
 	q.shuffleAnswers()
-	return q
+	return q[0:5]
 }
 
 func readQuestionsFromFile(fn string) [][]string {

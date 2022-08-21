@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestShouldReadFromFileAndFormatSlice(t *testing.T) {
-	q := readQuestionsFromFile("questions")[0]
+	q := readQuestionsFromFile("easyquestions")[0]
 	if len(q) != 6 {
 		t.Errorf("Expected length of question to be 6, but was %d", len(q))
 	}

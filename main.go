@@ -8,7 +8,7 @@ func main() {
 	clearScreen()
 	alive := true
 	questNum := 0
-	questions := newQuestions("questions")
+	questions := buildQuestionList()
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -50,6 +50,12 @@ func main() {
 		}
 
 	}
+}
+
+func buildQuestionList() questions {
+	qs := newQuestions("easyquestions")
+	qs = append(qs, newQuestions("mediumquestions")...)
+	return append(qs, newQuestions("hardquestions")...)
 }
 
 func getCorrectAnswer(q []string) string {
