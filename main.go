@@ -30,19 +30,19 @@ func main() {
 		println("Please enter the answer: 1..4")
 		_, err := fmt.Scan(&inp)
 
-		if err == nil && inp >= 1 && inp <= 5 {
+		if inputIsCorrect(err, inp) {
 			if inp == 5 {
 				println("Congratulations, you are walking away with", matchQuestionToAmount(questNum-1))
-				println("The correct answer was", q[5])
+				println("The correct answer was", getCorrectAnswer(q))
 				alive = false
-			} else if q[inp] == q[5] {
+			} else if q[inp] == getCorrectAnswer(q) {
 				println("YOU'RE CORRECT!")
 				clearScreen()
 				questNum++
 			} else {
 				println("YOU'RE WRONG")
-				println("The correct answer was", q[5])
-				println("You are leaving with", wrongAnswerScreen(questNum))
+				println("The correct answer was", getCorrectAnswer(q))
+				println("You are leaving with", getAmountFromLastCheckpoint(questNum))
 				alive = false
 			}
 		} else {
@@ -52,11 +52,19 @@ func main() {
 	}
 }
 
+func getCorrectAnswer(q []string) string {
+	return q[5]
+}
+
+func inputIsCorrect(err error, inp int) bool {
+	return err == nil && inp >= 1 && inp <= 5
+}
+
 func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-func wrongAnswerScreen(q int) string {
+func getAmountFromLastCheckpoint(q int) string {
 	if q == 0 {
 		return matchQuestionToAmount(-1)
 	} else if q > 0 && q < 5 {

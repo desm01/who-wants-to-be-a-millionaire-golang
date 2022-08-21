@@ -17,17 +17,28 @@ func TestShouldMatchQuestionToAmount(t *testing.T) {
 	}
 }
 
-func TestWrongAnswerScreen(t *testing.T) {
-	str := wrongAnswerScreen(0)
+func TestGetAmountFromLastCheckpoint(t *testing.T) {
+	str := getAmountFromLastCheckpoint(0)
 	if str != "$0" {
 		t.Errorf("Expected $0 but got %v", str)
 	}
-	str = wrongAnswerScreen(4)
+	str = getAmountFromLastCheckpoint(4)
 	if str != "$100" {
 		t.Errorf("Expected $100 but got %v", str)
 	}
-	str = wrongAnswerScreen(10)
+	str = getAmountFromLastCheckpoint(10)
 	if str != "$32,000" {
 		t.Errorf("Expected $32,000 but got %v", str)
+	}
+}
+
+func TestInputIsCorrect(t *testing.T) {
+	b := inputIsCorrect(nil, 9)
+	if b != false {
+		t.Errorf("Expected 9 to be rejected, but was accepted %v", b)
+	}
+	b = inputIsCorrect(nil, 3)
+	if b != true {
+		t.Errorf("Expected 3 to be accepted, but was rejected %v", b)
 	}
 }
