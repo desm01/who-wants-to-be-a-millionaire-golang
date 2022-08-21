@@ -2,17 +2,13 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"os"
-	"strings"
-	"time"
 )
 
 func main() {
 	clearScreen()
 	alive := true
 	questNum := 0
-	questions := getQuestions()
+	questions := newQuestions()
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -22,14 +18,14 @@ func main() {
 		println("QUESTION NUMBER: ", questNum+1, "/15")
 		println("This is for", matchQuestionToAmount(questNum))
 		println("You currently have", matchQuestionToAmount(questNum-1))
-		qs := questions[questNum]
+		q := questions[questNum]
 		var inp int
 
-		println(qs[0])
-		println("1.", qs[1])
-		println("2.", qs[2])
-		println("3.", qs[3])
-		println("4.", qs[4])
+		println(q[0])
+		println("1.", q[1])
+		println("2.", q[2])
+		println("3.", q[3])
+		println("4.", q[4])
 		println("5. Walk Away")
 		println("Please enter the answer: 1..4")
 		_, err := fmt.Scan(&inp)
@@ -37,15 +33,15 @@ func main() {
 		if err == nil && inp >= 1 && inp <= 5 {
 			if inp == 5 {
 				println("Congratulations, you are walking away with", matchQuestionToAmount(questNum-1))
-				println("The correct answer was", qs[5])
+				println("The correct answer was", q[5])
 				alive = false
-			} else if qs[inp] == qs[5] {
+			} else if q[inp] == q[5] {
 				println("YOU'RE CORRECT!")
 				clearScreen()
 				questNum++
 			} else {
 				println("YOU'RE WRONG")
-				println("The correct answer was", qs[5])
+				println("The correct answer was", q[5])
 				println("You are leaving with", wrongAnswerScreen(questNum))
 				alive = false
 			}
@@ -54,53 +50,6 @@ func main() {
 		}
 
 	}
-}
-
-func shuffleQuestions(qs [][]string) [][]string {
-	src := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(src)
-	for i := 1; i < len(qs); i++ {
-		newPos := r.Intn(i)
-		qs[i], qs[newPos] = qs[newPos], qs[i]
-	}
-	return qs
-}
-
-func getQuestions() [][]string {
-	bs, err := os.ReadFile("questions")
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
-	}
-	s := strings.Split(string(bs), ",")
-	qs := formatSlice(s)
-	qs = shuffleQuestions(qs)
-	return shuffleAnswers(qs)
-}
-
-func formatSlice(questions []string) [][]string {
-	qSlice := [][]string{}
-	for i := 0; i < len(questions); i++ {
-		if i%6 == 0 {
-			qSlice = append(qSlice, questions[i:i+6])
-		}
-	}
-	return qSlice
-}
-
-func shuffleAnswers(str [][]string) [][]string {
-	src := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(src)
-	for j := 0; j < len(str); j++ {
-		for i := 1; i < 5; i++ {
-			newPos := r.Intn(i)
-			if newPos != 0 {
-				str[j][i], str[j][newPos] = str[j][newPos], str[j][i]
-			}
-
-		}
-	}
-	return str
 }
 
 func clearScreen() {

@@ -2,13 +2,6 @@ package main
 
 import "testing"
 
-func TestShouldGetQuestions(t *testing.T) {
-	q := getQuestions()
-	if len(q) != 15 {
-		t.Errorf("Expected length of Questions to be 15, but was %d", len(q))
-	}
-}
-
 func TestShouldMatchQuestionToAmount(t *testing.T) {
 	zero := matchQuestionToAmount(0)
 	if zero != "$100" {
