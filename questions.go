@@ -12,17 +12,16 @@ type questions [][]string
 
 func newQuestions() questions {
 	q := questions{}
-	q = append(q, readQuestionsFromFile()...)
+	q = append(q, readQuestionsFromFile("questions")...)
 	q.shuffleQuestions()
 	q.shuffleAnswers()
 	return q
 }
 
-func readQuestionsFromFile() [][]string {
-	bs, err := os.ReadFile("questions")
+func readQuestionsFromFile(fn string) [][]string {
+	bs, err := os.ReadFile(fn)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(1)
 	}
 	s := strings.Split(string(bs), ",")
 	return formatSlice(s)
