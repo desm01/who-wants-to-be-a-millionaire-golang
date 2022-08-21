@@ -14,6 +14,7 @@ func main() {
 	questNum := 0
 	questions := getQuestions()
 	questions = shuffleQuestions(questions)
+	questions = shuffleAnswers(questions)
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -24,7 +25,6 @@ func main() {
 		println("This is for", matchQuestionToAmount(questNum))
 		println("You currently have", matchQuestionToAmount(questNum-1))
 		qs := questions[questNum]
-		qs = shuffleAnswers(qs)
 		var inp int
 
 		println(qs[0])
@@ -88,15 +88,17 @@ func formatSlice(questions []string) [][]string {
 	return qSlice
 }
 
-func shuffleAnswers(str []string) []string {
+func shuffleAnswers(str [][]string) [][]string {
 	src := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(src)
-	for i := 1; i < 5; i++ {
-		newPos := r.Intn(i)
-		if newPos != 0 {
-			str[i], str[newPos] = str[newPos], str[i]
-		}
+	for j := 0; j < len(str); j++ {
+		for i := 1; i < 5; i++ {
+			newPos := r.Intn(i)
+			if newPos != 0 {
+				str[j][i], str[j][newPos] = str[j][newPos], str[j][i]
+			}
 
+		}
 	}
 	return str
 }
