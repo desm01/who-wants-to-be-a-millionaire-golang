@@ -53,9 +53,9 @@ func main() {
 }
 
 func buildQuestionList() questions {
-	qs := newQuestions("easyquestions")
-	qs = append(qs, newQuestions("mediumquestions")...)
-	return append(qs, newQuestions("hardquestions")...)
+	qs := newQuestions("./questions/easyquestions")
+	qs = append(qs, newQuestions("./questions/mediumquestions")...)
+	return append(qs, newQuestions("./questions/hardquestions")...)
 }
 
 func getCorrectAnswer(q []string) string {
