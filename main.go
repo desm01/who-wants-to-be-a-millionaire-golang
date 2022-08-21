@@ -8,7 +8,7 @@ func main() {
 	clearScreen()
 	alive := true
 	questNum := 0
-	questions := newQuestions()
+	questions := newQuestions("questions")
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -69,7 +69,7 @@ func getAmountFromLastCheckpoint(q int) string {
 		return matchQuestionToAmount(-1)
 	} else if q > 0 && q < 5 {
 		return matchQuestionToAmount(0)
-	} else if q > 5 && q < 9 {
+	} else if q >= 5 && q < 9 {
 		return matchQuestionToAmount(4)
 	} else {
 		return matchQuestionToAmount(9)

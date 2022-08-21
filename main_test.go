@@ -26,6 +26,10 @@ func TestGetAmountFromLastCheckpoint(t *testing.T) {
 	if str != "$100" {
 		t.Errorf("Expected $100 but got %v", str)
 	}
+	str = getAmountFromLastCheckpoint(5)
+	if str != "$1,000" {
+		t.Errorf("Expected $1,000 but got %v", str)
+	}
 	str = getAmountFromLastCheckpoint(10)
 	if str != "$32,000" {
 		t.Errorf("Expected $32,000 but got %v", str)

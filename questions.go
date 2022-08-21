@@ -10,9 +10,9 @@ import (
 
 type questions [][]string
 
-func newQuestions() questions {
+func newQuestions(fn string) questions {
 	q := questions{}
-	q = append(q, readQuestionsFromFile("questions")...)
+	q = append(q, readQuestionsFromFile(fn)...)
 	q.shuffleQuestions()
 	q.shuffleAnswers()
 	return q
