@@ -13,8 +13,6 @@ func main() {
 	alive := true
 	questNum := 0
 	questions := getQuestions()
-	questions = shuffleQuestions(questions)
-	questions = shuffleAnswers(questions)
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -75,7 +73,9 @@ func getQuestions() [][]string {
 		os.Exit(1)
 	}
 	s := strings.Split(string(bs), ",")
-	return formatSlice(s)
+	qs := formatSlice(s)
+	qs = shuffleQuestions(qs)
+	return shuffleAnswers(qs)
 }
 
 func formatSlice(questions []string) [][]string {
