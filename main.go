@@ -21,11 +21,11 @@ func main() {
 		q := questions[questNum]
 		var inp int
 
-		println(q[0])
-		println("1.", q[1])
-		println("2.", q[2])
-		println("3.", q[3])
-		println("4.", q[4])
+		println(q.question)
+		println("1.", q.answers[0])
+		println("2.", q.answers[1])
+		println("3.", q.answers[2])
+		println("4.", q.answers[3])
 		println("5. Walk Away")
 		println("Please enter the answer: 1..4")
 		_, err := fmt.Scan(&inp)
@@ -35,7 +35,7 @@ func main() {
 				println("Congratulations, you are walking away with", matchQuestionToAmount(questNum-1))
 				displayCorrectAnswer(q)
 				alive = false
-			} else if q[inp] == getCorrectAnswer(q) {
+			} else if q.answers[inp-1] == q.correctAnswer {
 				println("YOU'RE CORRECT!")
 				clearScreen()
 				questNum++
@@ -58,10 +58,6 @@ func buildQuestionList() questions {
 	return append(qs, newQuestions("./questions/hardquestions")...)
 }
 
-func getCorrectAnswer(q []string) string {
-	return q[5]
-}
-
 func inputIsCorrect(err error, inp int) bool {
 	return err == nil && inp >= 1 && inp <= 5
 }
@@ -70,8 +66,8 @@ func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-func displayCorrectAnswer(q []string) {
-	println("The correct answer to '" + q[0] + "' was " + getCorrectAnswer(q))
+func displayCorrectAnswer(q question) {
+	println("The correct answer to '" + q.question + "' was " + q.correctAnswer)
 }
 
 func getAmountFromLastCheckpoint(q int) string {

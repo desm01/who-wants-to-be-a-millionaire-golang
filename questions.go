@@ -8,56 +8,42 @@ import (
 	"time"
 )
 
-type questions [][]string
+type question struct {
+	question      string
+	answers       []string
+	correctAnswer string
+}
+
+type questions []question
 
 func newQuestions(fn string) questions {
 	q := questions{}
 	q = append(q, readQuestionsFromFile(fn)...)
-	q.shuffleQuestions()
-	q.shuffleAnswers()
 	return q[0:5]
 }
 
-func readQuestionsFromFile(fn string) [][]string {
+func readQuestionsFromFile(fn string) questions {
 	bs, err := os.ReadFile(fn)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
 	s := strings.Split(string(bs), ",")
-	return formatSlice(s)
+	return formatQuestionList(s)
 }
 
-func formatSlice(questions []string) [][]string {
-	qSlice := [][]string{}
-	for i := 0; i < len(questions); i++ {
+func formatQuestionList(q []string) questions {
+	qSlice := []question{}
+	for i := 0; i < len(q); i++ {
 		if i%6 == 0 {
-			qSlice = append(qSlice, questions[i:i+6])
-		}
-	}
-	return qSlice
-}
-
-func (qs questions) shuffleQuestions() [][]string {
-	src := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(src)
-	for i := 1; i < len(qs); i++ {
-		newPos := r.Intn(i)
-		qs[i], qs[newPos] = qs[newPos], qs[i]
-	}
-	return qs
-}
-
-func (q questions) shuffleAnswers() [][]string {
-	src := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(src)
-	for j := 0; j < len(q); j++ {
-		for i := 1; i < 5; i++ {
-			newPos := r.Intn(i)
-			if newPos != 0 {
-				q[j][i], q[j][newPos] = q[j][newPos], q[j][i]
+			q := question{
+				question:      q[i],
+				answers:       q[i+1 : i+5],
+				correctAnswer: q[i+5],
 			}
-
+			qSlice = append(qSlice, q)
 		}
 	}
-	return q
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(qSlice), func(i, j int) { qSlice[i], qSlice[j] = qSlice[j], qSlice[i] })
+	return qSlice
 }
