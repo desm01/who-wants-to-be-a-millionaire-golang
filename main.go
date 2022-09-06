@@ -9,6 +9,7 @@ func main() {
 	alive := true
 	questNum := 0
 	questions := buildQuestionList()
+	lifelines := newLifelines()
 	for alive {
 		if questNum == 15 {
 			println("YOU HAVE WON $1,000,000!")
@@ -16,8 +17,8 @@ func main() {
 			break
 		}
 		println("QUESTION NUMBER: ", questNum+1, "/15")
-		println("This is for", matchQuestionToAmount(questNum))
-		println("You currently have", matchQuestionToAmount(questNum-1))
+		println("This is for", matchQuestionNumberToAmount(questNum))
+		println("You currently have", matchQuestionNumberToAmount(questNum-1))
 		q := questions[questNum]
 		var inp int
 
@@ -27,13 +28,17 @@ func main() {
 		println("3.", q.answers[2])
 		println("4.", q.answers[3])
 		println("5. Walk Away")
+		printAllLifelines(lifelines)
 		println("Please enter the answer: 1..4")
 		_, err := fmt.Scan(&inp)
 
 		if inputIsCorrect(err, inp) {
-			if inp == 5 && playerWantsToWalkAway() {
-				println("Congratulations, you are walking away with", matchQuestionToAmount(questNum-1))
-				displayCorrectAnswer(q)
+			if inp >= 8 && inp <= 10 {
+				lifelines.use(inp, &q)
+				clearScreen()
+			} else if inp == 5 && playerWantsToWalkAway() {
+				println("Congratulations, you are walking away with", matchQuestionNumberToAmount(questNum-1))
+				q.displayCorrectAnswer()
 				alive = false
 			} else if q.answers[inp-1] == q.correctAnswer {
 				println("YOU'RE CORRECT!")
@@ -41,7 +46,7 @@ func main() {
 				questNum++
 			} else {
 				println("YOU'RE WRONG")
-				displayCorrectAnswer(q)
+				q.displayCorrectAnswer()
 				println("You are leaving with", getAmountFromLastCheckpoint(questNum))
 				alive = false
 			}
@@ -59,26 +64,22 @@ func buildQuestionList() questions {
 }
 
 func inputIsCorrect(err error, inp int) bool {
-	return err == nil && inp >= 1 && inp <= 5
+	return (err == nil && inp >= 1 && inp <= 4) || inp == 8 || inp == 9 || inp == 10
 }
 
 func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-func displayCorrectAnswer(q question) {
-	println("The correct answer to '" + q.question + "' was " + q.correctAnswer)
-}
-
 func getAmountFromLastCheckpoint(q int) string {
 	if q == 0 {
-		return matchQuestionToAmount(-1)
+		return matchQuestionNumberToAmount(-1)
 	} else if q > 0 && q < 5 {
-		return matchQuestionToAmount(0)
+		return matchQuestionNumberToAmount(0)
 	} else if q >= 5 && q < 9 {
-		return matchQuestionToAmount(4)
+		return matchQuestionNumberToAmount(4)
 	} else {
-		return matchQuestionToAmount(9)
+		return matchQuestionNumberToAmount(9)
 	}
 }
 
@@ -95,7 +96,7 @@ func playerWantsToWalkAway() bool {
 	return false
 }
 
-func matchQuestionToAmount(q int) string {
+func matchQuestionNumberToAmount(q int) string {
 	switch q {
 	case 0:
 		return "$100"

@@ -1,25 +1,35 @@
 package main
 
-type lifelines []string
+import "fmt"
+
+type lifeline struct {
+	lifelineName string
+	used         bool
+}
+
+type lifelines []lifeline
 
 func newLifelines() lifelines {
-	return lifelines{"Ask the Audience", "50/50", "Phone a friend"}
+	return []lifeline{{"8. Ask the Audience", false}, {"9. 50/50", false}, {"10. Phone a friend", false}}
 }
 
-func (l *lifelines) removeLifeline(choosenLine string) {
-	nl := lifelines{}
-	for i := 0; i < len(*l); i++ {
-		if (*l)[i] != choosenLine {
-			nl = append(nl, (*l)[i])
-		}
+func (l *lifelines) use(inp int, q *question) {
+	if inp == 9 && !(*l)[1].used {
+		q.hideTwoAnswers()
+		(*l)[1].removeLifeline()
 	}
-	*l = nl
 }
 
-func (li lifelines) printLifelines() {
+func (l *lifeline) removeLifeline() {
+	(*l).used = true
+}
+
+func printAllLifelines(li []lifeline) {
 	count := 8
 	for _, element := range li {
-		println(count, element)
-		count++
+		if !element.used {
+			fmt.Println(element.lifelineName)
+			count++
+		}
 	}
 }

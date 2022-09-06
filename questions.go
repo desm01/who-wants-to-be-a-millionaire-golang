@@ -14,11 +14,29 @@ type question struct {
 	correctAnswer string
 }
 
+func (q question) displayCorrectAnswer() {
+	println("The correct answer to '" + q.question + "' was " + q.correctAnswer)
+}
+
+func (q *question) hideTwoAnswers() {
+	numToHide := 2
+	for numToHide > 0 {
+		rand.Seed(time.Now().UnixNano())
+		i := rand.Intn(3)
+		if q.answers[i] != q.correctAnswer && q.answers[i] != "" {
+			q.answers[i] = ""
+			numToHide--
+		}
+	}
+}
+
 type questions []question
 
 func newQuestions(fn string) questions {
 	q := questions{}
 	q = append(q, readQuestionsFromFile(fn)...)
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(q), func(i, j int) { q[i], q[j] = q[j], q[i] })
 	return q[0:5]
 }
 
@@ -43,7 +61,5 @@ func formatQuestionList(q []string) questions {
 			qSlice = append(qSlice, q)
 		}
 	}
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(qSlice), func(i, j int) { qSlice[i], qSlice[j] = qSlice[j], qSlice[i] })
 	return qSlice
 }
