@@ -33,27 +33,31 @@ func main() {
 		_, err := fmt.Scan(&inp)
 
 		if inputIsCorrect(err, inp) {
-			if inp >= 8 && inp <= 10 {
-				lifelines.use(inp, &q)
-				clearScreen()
-			} else if inp == 5 && playerWantsToWalkAway() {
-				println("Congratulations, you are walking away with", matchQuestionNumberToAmount(questNum-1))
-				q.displayCorrectAnswer()
-				alive = false
-			} else if q.answers[inp-1] == q.correctAnswer {
-				println("YOU'RE CORRECT!")
-				clearScreen()
-				questNum++
-			} else {
-				println("YOU'RE WRONG")
-				q.displayCorrectAnswer()
-				println("You are leaving with", getAmountFromLastCheckpoint(questNum))
-				alive = false
-			}
+			mapInput(inp, &q, &lifelines, &questNum, &alive)
 		} else {
 			clearScreen()
 		}
 
+	}
+}
+
+func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
+	if inp >= 8 && inp <= 10 {
+		l.use(inp, q)
+		clearScreen()
+	} else if inp == 5 && playerWantsToWalkAway() {
+		println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
+		q.displayCorrectAnswer()
+		*alive = false
+	} else if q.answers[inp-1] == q.correctAnswer {
+		println("YOU'RE CORRECT!")
+		clearScreen()
+		*questNum++
+	} else {
+		println("YOU'RE WRONG")
+		q.displayCorrectAnswer()
+		println("You are leaving with", getAmountFromLastCheckpoint(*questNum))
+		*alive = false
 	}
 }
 
