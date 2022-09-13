@@ -40,6 +40,16 @@ func newQuestions(fn string) questions {
 	return q[0:5]
 }
 
+func (q question) getRandomWrongAnswer() string {
+	for {
+		rand.Seed(int64(time.Now().UnixNano()))
+		num := rand.Intn(3)
+		if q.answers[num] != q.correctAnswer {
+			return q.answers[num]
+		}
+	}
+}
+
 func readQuestionsFromFile(fn string) questions {
 	bs, err := os.ReadFile(fn)
 	if err != nil {

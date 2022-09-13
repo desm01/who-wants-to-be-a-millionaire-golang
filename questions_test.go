@@ -26,3 +26,11 @@ func TestShouldReadFromFileAndFormatSlice(t *testing.T) {
 		t.Errorf("Expected: Joe Biden but was %v", q.correctAnswer)
 	}
 }
+
+func TestShouldGetRandomWrongAnswer(t *testing.T) {
+	q := readQuestionsFromFile("./questions/easyquestions")[0]
+	wrongAns := q.getRandomWrongAnswer()
+	if wrongAns == q.correctAnswer {
+		t.Errorf("Expected to get the Wrong Answer, but got the Correct answer. Wrong Answer: %v Correct Ansnwer: %v", wrongAns, q.correctAnswer)
+	}
+}

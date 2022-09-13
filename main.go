@@ -16,6 +16,7 @@ func main() {
 			alive = false
 			break
 		}
+		println()
 		println("QUESTION NUMBER: ", questNum+1, "/15")
 		println("This is for", matchQuestionNumberToAmount(questNum))
 		println("You currently have", matchQuestionNumberToAmount(questNum-1))
@@ -43,8 +44,8 @@ func main() {
 
 func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 	if inp >= 8 && inp <= 10 {
-		l.use(inp, q)
 		clearScreen()
+		l.use(inp, q)
 	} else if inp == 5 && playerWantsToWalkAway() {
 		println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
 		q.displayCorrectAnswer()
