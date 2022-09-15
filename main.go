@@ -48,7 +48,7 @@ func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 		if playerWantsToWalkAway() {
 			clearScreen()
 			println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
-			q.displayCorrectAnswer()
+			fmt.Println(q.getCorrectAnswerDescription())
 			*alive = false
 		} else {
 			clearScreen()
@@ -61,7 +61,7 @@ func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 	} else {
 		clearScreen()
 		println("YOU'RE WRONG")
-		q.displayCorrectAnswer()
+		fmt.Println(q.getCorrectAnswerDescription())
 		println("You are leaving with", getAmountFromLastCheckpoint(*questNum))
 		*alive = false
 	}

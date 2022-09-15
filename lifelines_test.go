@@ -15,3 +15,14 @@ func TestUseLifeLine(t *testing.T) {
 		t.Errorf("Should have removed Ask the Audience, current slice is %v", l)
 	}
 }
+
+func TestGeneratedAudiencePercentLessThanHundred(t *testing.T) {
+	pSlice := generateAudiencePercentages(100)
+	count := 0
+	for _, e := range pSlice {
+		count += e
+	}
+	if count > 100 {
+		t.Errorf("The audience percentage can not be higher than 100, was %v", count)
+	}
+}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"os"
 	"strings"
@@ -14,15 +13,14 @@ type question struct {
 	correctAnswer string
 }
 
-func (q question) displayCorrectAnswer() {
-	println("The correct answer to '" + q.question + "' was " + q.correctAnswer)
+func (q question) getCorrectAnswerDescription() string {
+	return "The correct answer to '" + q.question + "' was " + q.correctAnswer
 }
 
 func (q *question) hideTwoAnswers() {
 	numToHide := 2
 	for numToHide > 0 {
-		rand.Seed(time.Now().UnixNano())
-		i := rand.Intn(3)
+		i := generateRandomNumber(3)
 		if q.answers[i] != q.correctAnswer && q.answers[i] != "" {
 			q.answers[i] = ""
 			numToHide--
@@ -30,24 +28,13 @@ func (q *question) hideTwoAnswers() {
 	}
 }
 
-type questions []question
-
-func newQuestions(fn string) questions {
-	q := questions{}
-	q = append(q, readQuestionsFromFile(fn)...)
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(q), func(i, j int) { q[i], q[j] = q[j], q[i] })
-	return q[0:5]
-}
-
 func (q question) getRandomWrongAnswer() string {
-	for {
-		rand.Seed(int64(time.Now().UnixNano()))
-		num := rand.Intn(3)
-		if q.answers[num] != q.correctAnswer {
-			return q.answers[num]
-		}
+	num := generateRandomNumber(3)
+	if q.answers[num] != q.correctAnswer {
+		return q.answers[num]
 	}
+	return q.getRandomWrongAnswer()
+
 }
 
 func (q question) getAllWrongAnswers() []string {
@@ -60,26 +47,38 @@ func (q question) getAllWrongAnswers() []string {
 	return wrongAns
 }
 
+type questions []question
+
+func newQuestions(fn string) questions {
+	q := questions{}
+	q = append(q, readQuestionsFromFile(fn)...)
+	q = shuffleQuestions(q)
+	return q[0:5]
+}
+
+func shuffleQuestions(q questions) questions {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(q), func(i, j int) { q[i], q[j] = q[j], q[i] })
+	return q
+}
+
 func readQuestionsFromFile(fn string) questions {
-	bs, err := os.ReadFile(fn)
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
+	bs, _ := os.ReadFile(fn)
 	s := strings.Split(string(bs), ",")
 	return formatQuestions(s)
 }
 
-func formatQuestions(q []string) questions {
-	qSlice := []question{}
-	for i := 0; i < len(q); i++ {
+func formatQuestions(str []string) questions {
+	qs := questions{}
+	for i := 0; i < len(str); i++ {
 		if i%6 == 0 {
 			q := question{
-				question:      q[i],
-				answers:       q[i+1 : i+5],
-				correctAnswer: q[i+5],
+				question:      str[i],
+				answers:       str[i+1 : i+5],
+				correctAnswer: str[i+5],
 			}
-			qSlice = append(qSlice, q)
+			qs = append(qs, q)
 		}
 	}
-	return qSlice
+	return qs
 }

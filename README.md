@@ -10,6 +10,4 @@ go build . && ./whowants
 ```
 
 ## To do
-- More questions
-- Tidy up logic
 - More tests
