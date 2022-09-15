@@ -4,11 +4,13 @@ Simple game created whilst learning Golang
 
 Building, testing & running:
 ```
-go run main.go questions.go
+go run .
 go test
-go build main.go questions.go && ./main
+go build . && ./whowants
 ```
 
 ## To do
-- Lifelines
 - More questions
+- Tidy up logic
+- More tests
+- Fancy text formatting
