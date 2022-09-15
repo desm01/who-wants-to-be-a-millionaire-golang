@@ -49,6 +49,7 @@ func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 			q.displayCorrectAnswer()
 			*alive = false
 		}
+		clearScreen()
 		return
 	} else if q.answers[inp-1] == q.correctAnswer {
 		clearScreen()
