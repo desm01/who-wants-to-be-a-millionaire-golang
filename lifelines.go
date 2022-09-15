@@ -90,11 +90,9 @@ func (l *lifeline) removeLifeline() {
 }
 
 func printAllLifelines(li []lifeline) {
-	count := 8
 	for _, element := range li {
 		if !element.used {
 			fmt.Println(element.lifelineName)
-			count++
 		}
 	}
 }

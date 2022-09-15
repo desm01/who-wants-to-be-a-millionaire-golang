@@ -81,7 +81,7 @@ func getAmountFromLastCheckpoint(q int) string {
 		return matchQuestionNumberToAmount(-1)
 	} else if q > 0 && q < 5 {
 		return matchQuestionNumberToAmount(0)
-	} else if q >= 5 && q < 9 {
+	} else if q >= 5 && q < 10 {
 		return matchQuestionNumberToAmount(4)
 	} else {
 		return matchQuestionNumberToAmount(9)
