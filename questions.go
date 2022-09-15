@@ -50,6 +50,16 @@ func (q question) getRandomWrongAnswer() string {
 	}
 }
 
+func (q question) getAllWrongAnswers() []string {
+	wrongAns := []string{}
+	for i := 0; i < 4; i++ {
+		if q.answers[i] != q.correctAnswer {
+			wrongAns = append(wrongAns, q.answers[i])
+		}
+	}
+	return wrongAns
+}
+
 func readQuestionsFromFile(fn string) questions {
 	bs, err := os.ReadFile(fn)
 	if err != nil {

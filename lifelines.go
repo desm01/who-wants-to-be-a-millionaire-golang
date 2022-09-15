@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"sort"
 	"time"
 )
 
@@ -19,6 +20,7 @@ func newLifelines() lifelines {
 
 func (l *lifelines) use(inp int, q *question) {
 	if inp == 8 && !(*l)[0].used {
+		printAskTheAudience(q)
 		(*l)[0].removeLifeline()
 	} else if inp == 9 && !(*l)[1].used {
 		q.hideTwoAnswers()
@@ -29,9 +31,52 @@ func (l *lifelines) use(inp int, q *question) {
 	}
 }
 
-func printPhoneAFriend(q *question) {
+func printAskTheAudience(q *question) {
+	percents := generateAudiencePercentages(100)
+	chanceOfCorrectAns := generateRandomNumber(100)
+	if chanceOfCorrectAns > 10 {
+		fmt.Println("The audience thinks:")
+		fmt.Print(percents[3], "%: ", q.correctAnswer, "\n")
+		wrongAns := q.getAllWrongAnswers()
+		for i := 2; i >= 0; i-- {
+			fmt.Print(percents[i+1], "%: ", wrongAns[i], "\n")
+		}
+	} else {
+		qs := make([]string, len(q.answers))
+		copy(qs, q.answers)
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(qs), func(i, j int) { qs[i], qs[j] = qs[j], qs[i] })
+		fmt.Println("The audience thinks:")
+		for i := 3; i >= 0; i-- {
+			fmt.Print(percents[i], "%: ", qs[i], "\n")
+		}
+	}
+}
+
+func generateRandomNumber(max int) int {
 	rand.Seed(time.Now().UnixNano())
-	chance := rand.Intn(100-0+1) + 1
+	return rand.Intn(max)
+}
+
+func generateAudiencePercentages(sumTo int) []int {
+	percents := []int{}
+	for i := 0; i < 4; i++ {
+		percents = append(percents, generateRandomNumber(sumTo))
+	}
+	sum := 0.0
+	for _, element := range percents {
+		sum += float64(element)
+	}
+	correctPercent := []int{}
+	for _, element := range percents {
+		correctPercent = append(correctPercent, int(float64(element)/sum*100))
+	}
+	sort.Ints(correctPercent)
+	return correctPercent
+}
+
+func printPhoneAFriend(q *question) {
+	chance := generateRandomNumber(100)
 	if chance >= 40 {
 		fmt.Println("Your friend thinks the answer is", q.correctAnswer)
 	} else {
