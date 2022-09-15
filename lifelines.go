@@ -8,6 +8,7 @@ import (
 )
 
 type lifeline struct {
+	keyCode      int
 	lifelineName string
 	used         bool
 }
@@ -15,19 +16,29 @@ type lifeline struct {
 type lifelines []lifeline
 
 func newLifelines() lifelines {
-	return []lifeline{{"8. Ask the Audience", false}, {"9. 50/50", false}, {"10. Phone a friend", false}}
+	return []lifeline{{8, "Ask the Audience", false}, {9, "50/50", false}, {10, "Phone a friend", false}}
 }
 
 func (l *lifelines) use(inp int, q *question) {
-	if inp == 8 && !(*l)[0].used {
+	i := 0
+	for i < 3 {
+		if (*l)[i].keyCode == inp && !(*l)[i].used {
+			mapInputToKeyCode(inp, q)
+			(*l)[i].used = true
+		}
+		i++
+	}
+	fmt.Println(*l)
+}
+
+func mapInputToKeyCode(inp int, q *question) {
+	switch inp {
+	case 8:
 		printAskTheAudience(q)
-		(*l)[0].removeLifeline()
-	} else if inp == 9 && !(*l)[1].used {
+	case 9:
 		q.hideTwoAnswers()
-		(*l)[1].removeLifeline()
-	} else if inp == 10 && !(*l)[2].used {
+	case 10:
 		printPhoneAFriend(q)
-		(*l)[2].removeLifeline()
 	}
 }
 
@@ -36,7 +47,6 @@ func printAskTheAudience(q *question) {
 	chanceOfCorrectAns := generateRandomNumber(100)
 	if chanceOfCorrectAns > 10 {
 		fmt.Println("The audience thinks:")
-		fmt.Println(percents)
 		fmt.Print(percents[3], "%: ", q.correctAnswer, "\n")
 		wrongAns := q.getAllWrongAnswers()
 		for i := 2; i >= 0; i-- {
@@ -86,14 +96,10 @@ func printPhoneAFriend(q *question) {
 
 }
 
-func (l *lifeline) removeLifeline() {
-	(*l).used = true
-}
-
 func printAllLifelines(li []lifeline) {
-	for _, element := range li {
-		if !element.used {
-			fmt.Println(element.lifelineName)
+	for _, e := range li {
+		if !e.used {
+			fmt.Print(e.keyCode, ". ", e.lifelineName, "\n")
 		}
 	}
 }

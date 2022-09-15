@@ -4,9 +4,10 @@ import (
 	"testing"
 )
 
-func TestRemoveLifeline(t *testing.T) {
+func TestUseLifeLine(t *testing.T) {
 	l := newLifelines()
-	l[0].removeLifeline()
+	q := newQuestions("./questions/easyquestions")
+	l.use(8, &q[0])
 	if len(l) != 3 {
 		t.Errorf("Expected the length of lifelines to be 3 but was %v", len(l))
 	}

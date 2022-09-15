@@ -66,10 +66,10 @@ func readQuestionsFromFile(fn string) questions {
 		fmt.Println("Error:", err)
 	}
 	s := strings.Split(string(bs), ",")
-	return formatQuestionList(s)
+	return formatQuestions(s)
 }
 
-func formatQuestionList(q []string) questions {
+func formatQuestions(q []string) questions {
 	qSlice := []question{}
 	for i := 0; i < len(q); i++ {
 		if i%6 == 0 {
