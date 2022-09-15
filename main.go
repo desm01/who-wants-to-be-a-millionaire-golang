@@ -34,6 +34,8 @@ func main() {
 
 		if inputIsCorrect(err, inp) {
 			mapInput(inp, &q, &lifelines, &questNum, &alive)
+		} else {
+			clearScreen()
 		}
 	}
 }
@@ -48,8 +50,9 @@ func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 			println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
 			q.displayCorrectAnswer()
 			*alive = false
+		} else {
+			clearScreen()
 		}
-		clearScreen()
 		return
 	} else if q.answers[inp-1] == q.correctAnswer {
 		clearScreen()

@@ -13,4 +13,3 @@ go build . && ./whowants
 - More questions
 - Tidy up logic
 - More tests
-- Fancy text formatting

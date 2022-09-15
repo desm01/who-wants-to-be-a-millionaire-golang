@@ -33,34 +33,43 @@ func (l *lifelines) use(inp int, q *question) {
 func mapInputToKeyCode(inp int, q *question) {
 	switch inp {
 	case 8:
-		printAskTheAudience(q)
+		askTheAudience(q)
 	case 9:
 		q.hideTwoAnswers()
 	case 10:
-		printPhoneAFriend(q)
+		phoneAFriend(q)
 	}
 }
 
-func printAskTheAudience(q *question) {
-	percents := generateAudiencePercentages(100)
-	chanceOfCorrectAns := generateRandomNumber(100)
-	if chanceOfCorrectAns > 10 {
-		fmt.Println("The audience thinks:")
-		fmt.Print(percents[3], "%: ", q.correctAnswer, "\n")
-		wrongAns := q.getAllWrongAnswers()
+func askTheAudience(q *question) {
+	chanceOfAudBeingRight := generateRandomNumber(100)
+	if chanceOfAudBeingRight > 10 {
+		printAudienceResponse(q.correctAnswer, q.getAllWrongAnswers(), generateAudiencePercentages(100), true)
+	} else {
+		printAudienceResponse(q.correctAnswer, q.getAllWrongAnswers(), generateAudiencePercentages(100), false)
+	}
+}
+
+func printAudienceResponse(correctAnswer string, wrongAnswers []string, orderedPercent []int, audienceCorrect bool) {
+	fmt.Println("The audience thinks:")
+	if audienceCorrect {
+		fmt.Print(orderedPercent[3], "%: ", correctAnswer, "\n")
 		for i := 2; i >= 0; i-- {
-			fmt.Print(percents[i], "%: ", wrongAns[i], "\n")
+			fmt.Print(orderedPercent[i], "%: ", wrongAnswers[i], "\n")
 		}
 	} else {
-		qs := make([]string, len(q.answers))
-		copy(qs, q.answers)
-		rand.Seed(time.Now().UnixNano())
-		rand.Shuffle(len(qs), func(i, j int) { qs[i], qs[j] = qs[j], qs[i] })
-		fmt.Println("The audience thinks:")
+		wrongAnswers := append(wrongAnswers, correctAnswer)
+		wrongAnswers = shuffleAnswers(wrongAnswers)
 		for i := 3; i >= 0; i-- {
-			fmt.Print(percents[i], "%: ", qs[i], "\n")
+			fmt.Print(wrongAnswers[i], "%: ", wrongAnswers[i], "\n")
 		}
 	}
+}
+
+func shuffleAnswers(qs []string) []string {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(qs), func(i, j int) { qs[i], qs[j] = qs[j], qs[i] })
+	return qs
 }
 
 func generateRandomNumber(max int) int {
@@ -85,7 +94,7 @@ func generateAudiencePercentages(sumTo int) []int {
 	return correctPercent
 }
 
-func printPhoneAFriend(q *question) {
+func phoneAFriend(q *question) {
 	chance := generateRandomNumber(100)
 	if chance >= 40 {
 		fmt.Println("Your friend thinks the answer is", q.correctAnswer)
