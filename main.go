@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-	clearScreen()
 	alive := true
 	questNum := 0
 	questions := buildQuestionList()
@@ -35,10 +34,7 @@ func main() {
 
 		if inputIsCorrect(err, inp) {
 			mapInput(inp, &q, &lifelines, &questNum, &alive)
-		} else {
-			clearScreen()
 		}
-
 	}
 }
 
@@ -48,17 +44,18 @@ func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 		l.use(inp, q)
 	} else if inp == 5 {
 		if playerWantsToWalkAway() {
+			clearScreen()
 			println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
 			q.displayCorrectAnswer()
 			*alive = false
 		}
-		clearScreen()
 		return
 	} else if q.answers[inp-1] == q.correctAnswer {
-		println("YOU'RE CORRECT!")
 		clearScreen()
+		println("YOU'RE CORRECT!")
 		*questNum++
 	} else {
+		clearScreen()
 		println("YOU'RE WRONG")
 		q.displayCorrectAnswer()
 		println("You are leaving with", getAmountFromLastCheckpoint(*questNum))
@@ -94,7 +91,6 @@ func getAmountFromLastCheckpoint(q int) string {
 
 func playerWantsToWalkAway() bool {
 	var inp int
-	clearScreen()
 	println("Are you sure you want to walk away?")
 	println("1. Yes")
 	println("2. No")

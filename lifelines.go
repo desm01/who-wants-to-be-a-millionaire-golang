@@ -28,7 +28,6 @@ func (l *lifelines) use(inp int, q *question) {
 		}
 		i++
 	}
-	fmt.Println(*l)
 }
 
 func mapInputToKeyCode(inp int, q *question) {
