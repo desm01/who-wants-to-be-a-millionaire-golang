@@ -46,10 +46,14 @@ func mapInput(inp int, q *question, l *lifelines, questNum *int, alive *bool) {
 	if inp >= 8 && inp <= 10 {
 		clearScreen()
 		l.use(inp, q)
-	} else if inp == 5 && playerWantsToWalkAway() {
-		println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
-		q.displayCorrectAnswer()
-		*alive = false
+	} else if inp == 5 {
+		if playerWantsToWalkAway() {
+			println("Congratulations, you are walking away with", matchQuestionNumberToAmount(*questNum-1))
+			q.displayCorrectAnswer()
+			*alive = false
+		}
+		clearScreen()
+		return
 	} else if q.answers[inp-1] == q.correctAnswer {
 		println("YOU'RE CORRECT!")
 		clearScreen()
@@ -69,7 +73,7 @@ func buildQuestionList() questions {
 }
 
 func inputIsCorrect(err error, inp int) bool {
-	return (err == nil && inp >= 1 && inp <= 4) || inp == 8 || inp == 9 || inp == 10
+	return (err == nil && inp >= 1 && inp <= 5) || inp == 8 || inp == 9 || inp == 10
 }
 
 func clearScreen() {

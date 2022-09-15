@@ -36,10 +36,11 @@ func printAskTheAudience(q *question) {
 	chanceOfCorrectAns := generateRandomNumber(100)
 	if chanceOfCorrectAns > 10 {
 		fmt.Println("The audience thinks:")
+		fmt.Println(percents)
 		fmt.Print(percents[3], "%: ", q.correctAnswer, "\n")
 		wrongAns := q.getAllWrongAnswers()
 		for i := 2; i >= 0; i-- {
-			fmt.Print(percents[i+1], "%: ", wrongAns[i], "\n")
+			fmt.Print(percents[i], "%: ", wrongAns[i], "\n")
 		}
 	} else {
 		qs := make([]string, len(q.answers))
