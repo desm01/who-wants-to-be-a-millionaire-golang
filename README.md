@@ -9,5 +9,3 @@ go test
 go build . && ./whowants
 ```
 
-## To do
-- More tests
