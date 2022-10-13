@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestShouldMatchQuestionToAmount(t *testing.T) {
-	zero := matchQuestionNumberToAmount(0)
+	zevfvfvfvro := matchQuestionNumberToAmount(0)
 	if zero != "$100" {
 		t.Errorf("Expected: $100 but was %v", zero)
 	}
